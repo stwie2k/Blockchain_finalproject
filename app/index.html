@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>捐献系统</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css" integrity="sha384-CCTZv2q9I9m3UOxRLaJneXrrqKwUNOzZ6NGEUMwHtShDJ+nCoiXJCAgi05KfkLGY" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+  <script type="application/javascript" src="js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="row">
+  <div class="banner">
+    <h1 class="text-center">捐款系统</h1>
+    <h4 class="text-center">为慈善献出一份力吧！</h4>
+    <div class="text-center"><a href="https://www.zastrin.com"><i class="fas fa-home fa-2x"></i></a>&nbsp;&nbsp;<a href="#"><i class="fab fa-github fa-2x"></i></a>&nbsp;&nbsp;<a href="#"><i class="fab fa-medium fa-2x"></i></a></div>
+  </div>
+  <div class="container col-margin-top-2">
+    <div class="table-responsive">
+      <table id="target" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>捐款对象</th>
+            <th>序号</th>
+            <th>收款总数额</th>
+          </tr>
+        </thead>
+        <tbody id="ta">
+          <tr v-for="(item,index) in targets">
+            <td>{{item.name}}</td>
+            <td>{{item.index}}</td>
+            <td>{{item.amount}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-6">
+        <h2>添加捐献目标</h2>
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="candidate">捐款目标</label>
+            <input type="text" class="form-control" id="targetname" placeholder="Ex: SYSU">
+          </div>
+          <button type="submit" class="btn btn-primary" id="addbutton" onclick="addTarget()">添加</button>
+        </div>
+        <br>
+        <strong><div id="msg"></div></strong>
+        <br>
+        <div id="vote-for"></div>
+        <div id="addr"></div>
+        <div id="signature"></div>
+        <br>
+      </div>
+      <div class="col-sm-6">
+        <h2>捐款信息填写</h2>
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label for="candidate" class="col-sm-2 control-label">对象序号</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="index" placeholder="Ex: 0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="voter-address" class="col-sm-2 control-label" >捐者地址</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="address" placeholder="Ex: 0xb54b27a1cdb786d5bc7d492da94c9a868f7b972e">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vote-signature" class="col-sm-2 control-label">捐款数额</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="amount" placeholder="Ex：10">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" onclick="donate()" class="btn btn-primary">确认捐款</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="de">
+      <h2>捐款细则</h2>
+
+      <table id="detail" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>捐款对象</th>
+            <th>捐款者地址</th>
+            <th>捐款数额</th>
+            <th>交易地址</th>
+          </tr>
+        </thead>
+        <tbody id="donatedetail">
+          <tr v-for="(item,index) in details">
+            <td>{{item.target}}</td>
+            <td>{{item.address}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.transact}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+   </div>
+
+</body>
+
+<script src="app.js"></script>
+</html>
