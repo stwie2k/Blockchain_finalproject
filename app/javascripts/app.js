@@ -44,7 +44,7 @@ var donate=new Vue({
     }
 
 })
-donatedetail
+
 
 window.donate = function(){
   let index= parseInt($("#index").val());
@@ -53,6 +53,7 @@ window.donate = function(){
 
   if(index>=test.targets.length){
     alert("该目标不存在");
+      return;
   }
 
     console.log(index);
@@ -79,6 +80,7 @@ var message = {from: address, to:account, value: web3.toWei(amount, 'ether')};
    web3.eth.sendTransaction(message, (err, res) => {
       if(err){
         alert("余额不足");
+          return;
       }else{
         console.log(res);
         test.targets[index].amount+=amount;
@@ -100,6 +102,7 @@ window.addTarget = function(){
 
   if(targerName.length==0){
     alert("请输入捐献目标");
+    return;
   }
 
   test.targets.push({name:targerName,index:test.targets.length,amount:0});
@@ -120,66 +123,7 @@ window.addTarget = function(){
 
 }
 
-window.submitVote = function(candidate) {
-  let candidateName = $("#candidate-name").val();
-  let signature = $("#voter-signature").val();
-  let voterAddress = $("#voter-address").val();
 
-  console.log(candidateName);
-  console.log(signature);
-  console.log(voterAddress);
-
-  $("#msg").html("Vote has been submitted. The vote count will increment as soon as the vote is recorded on the blockchain. Please wait.")
-
-  Donation.deployed().then(function(contractInstance) {
-    contractInstance.voteForCandidate(candidateName, voterAddress, signature, {gas: 140000, from: web3.eth.accounts[0]}).then(function() {
-      let div_id = candidates[candidateName];
-      console.log(div_id);
-      return contractInstance.totalVotesFor.call(candidateName).then(function(v) {
-        console.log(v.toString());
-        $("#" + div_id).html(v.toString());
-        $("#msg").html("");
-      });
-    });
-  });
-}
-
-window.voteForCandidate = function(candidate) {
-  let candidateName = $("#candidate").val();
-
-  let msgParams = [
-    {
-      type: 'string',      // Any valid solidity type
-      name: 'Message',     // Any string label you want
-      value: 'Vote for ' + candidateName  // The value to sign
-    }
-  ]
-
-  var from = web3.eth.accounts[0]
-
-  var params = [msgParams, from]
-  var method = 'eth_signTypedData'
-
-  console.log("Hash is ");
-  console.log(sigUtil.typedSignatureHash(msgParams));
-
-  web3.currentProvider.sendAsync({
-    method,
-    params,
-    from,
-  }, function (err, result) {
-    if (err) return console.dir(err)
-    if (result.error) {
-      alert(result.error.message)
-    }
-    if (result.error) return console.error(result)
-    $("#msg").html("User wants to vote for " + candidateName + ". Any one can now submit the vote to the blockchain on behalf of this user. Use the below values to submit the vote to the blockchain");
-    $("#vote-for").html("Candidate: " + candidateName);
-    $("#addr").html("Address: " + from);
-    $("#signature").html("Signature: " + result.result);
-    console.log('PERSONAL SIGNED:' + JSON.stringify(result.result))
-  })
-}
 
 $( document ).ready(function() {
   if (typeof web3 !== 'undefined') {
@@ -193,49 +137,11 @@ $( document ).ready(function() {
   }
 
   Donation.setProvider(web3.currentProvider);
-  // let candidateNames = Object.keys(candidates);
-  // for (var i = 0; i < candidateNames.length; i++) {
-  //   let name = candidateNames[i];
-  let count1;
-
-    Donation.deployed().then(function(contractInstance) {
-      contractInstance.targetsCount.call().then(function(v) {
-        console.log(v);
 
 
 
 
 
-
-      });
-
-    });
-
-  console.log();
-    for (var i = 0; i < parseInt(target.message); i++) {
-
-      // Donation.deployed().then(function(contractInstance) {
-      //   contractInstance.getTargetName.call(i,{from: account,gas: 3141592}).then(function(v) {
-      //   console.log(v);
-      //          currentname=v;
-      //   });
-      //
-      //
-      // });
-
-      Donation.deployed().then(function(contractInstance) {
-        contractInstance.getTargetAmount.call(i,{from: account,gas: 3141592}).then(function(v) {
-             test.targets.push({name:currentname,index:i,amount:v});
-
-
-        });
-
-      });
-
-
-
-
-    }
 
 
 
